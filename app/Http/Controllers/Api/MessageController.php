@@ -48,7 +48,7 @@ class MessageController extends Controller
             ]);
         }
 
-        return new MessageResource($message);
+        return new MessageResource($message->load('attachment'));
     }
 
     private function upload(UploadedFile $uploadedFile)
