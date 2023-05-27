@@ -74,9 +74,25 @@ class User extends Authenticatable implements JWTSubject
         return $this->hasMany(Message::class, 'user_id_receiver','id');
     }
 
-    public function dailyMessages()
+    public function dailyMessages(): HasMany
     {
         return $this->messages()
+            ->whereDate('created_at', '=', date('Y-m-d'))
+            ->latest();
+    }
+
+    public function receiverChats(): HasMany
+    {
+        return $this
+            ->hasMany(Chat::class, 'user_id', 'id')
+            ->whereDate('created_at', '=', date('Y-m-d'))
+            ->latest();
+    }
+
+    public function senderChats(): HasMany
+    {
+        return $this
+            ->hasMany(Chat::class, 'user_id', 'id')
             ->whereDate('created_at', '=', date('Y-m-d'))
             ->latest();
     }

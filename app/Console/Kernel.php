@@ -16,6 +16,15 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         // $schedule->command('inspire')->hourly();
+        $schedule->command('chats:send-history-daily-messages')
+            ->when(function (){
+                return now()->endOfDay();
+            });
+
+        $schedule->command('chats:send-history-daily-messages')
+            ->when(function (){
+                return now()->endOfDay();
+            });
     }
 
     /**

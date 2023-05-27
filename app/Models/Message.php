@@ -38,4 +38,9 @@ class Message extends Model
     {
         return $this->morphOne(Attachment::class, 'attachable');
     }
+
+    public function post(): BelongsTo
+    {
+        return $this->belongsTo(Post::class);
+    }
 }

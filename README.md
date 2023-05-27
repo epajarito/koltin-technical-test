@@ -38,6 +38,18 @@ DB_USERNAME=tu-usuario
 DB_PASSWORD=tu-contraseña
 ```
 
+## Configurar envio de email, en mi paso use mailhog, dejo un ejemplo de configuración [MailHog](https://panjeh.medium.com/setup-mailhog-with-laravel-valet-localhost-or-laravel-sail-9d48895433e6)
+```env
+MAIL_MAILER=smtp
+MAIL_HOST=localhost
+MAIL_PORT=1025
+MAIL_USERNAME=null
+MAIL_PASSWORD=null
+MAIL_ENCRYPTION=null
+MAIL_FROM_ADDRESS=no-reply@example.com
+MAIL_FROM_NAME="${APP_NAME}"
+```
+
 ## Configurar variables de entorno para vue
 ```env
 APP_URL=tu-host-local
@@ -63,6 +75,15 @@ npm run dev
 ## Levantar proyecto en local
 ```bash
 php artisan serve --port=8081
+```
+## Ejecutar Queue para encolar envio de email
+```bash
+php artisan queue:work
+```
+## Ejecutar comando para el envio de email
+```bash
+php artisan chats:send-history-individual-chats
+php artisan chats:chats:send-history-daily-messages
 ```
 acceder con las siguientes credenciales
 ```bash

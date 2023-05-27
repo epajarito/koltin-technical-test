@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Conversation;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,4 +14,22 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('testing', function(){
+    $conversations = Conversation::query()
+        ->has('chats')
+        ->with(['sender.senderChats','post','receiver'])
+        ->get();
+    foreach ($conversations as $conversation){
+        echo "Conversation[$conversation->id] <br>";
+        echo "Reibio: " . $conversation->receiver->name . "<br>";
+        echo "Publicación[{$conversation->post->id}]: " . $conversation->post->title . "<br>";
+        foreach($conversation->chats as $message) {
+            echo "Usuario [{$conversation->sender->name}]: " . $message->message;
+            echo "<br>";
+            echo "Fecha de creación: " . $message->created_at->format('Y-m-d H:i') . "<br>";
+        }
+        echo '<br><br><br>';
+    }
+    dd($conversations->toArray());
+});
 Route::view('/{any}', 'front-end' )->where('any', '.*');

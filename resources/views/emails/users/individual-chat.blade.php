@@ -1,15 +1,16 @@
 @component('mail::message')
-# Mensajes en base a tus publicaciones:
-
+# Mensajes en base a tu inbox
 Aquí te listamos los chats del día: <b>{{ now()->format('Y-m-d') }}</b>.
-
+# Publicación: {{ $conversation->post->title }}
+@php
+    $sender = $conversation->sender;
+@endphp
 <ul>
-    @foreach($messages as $message)
+    @foreach($conversation->chats as $message)
         <li>
             <p>
-                <span>Publicación: <b>{{ $message->post->title }}</b></span>
                 <br>
-                <b>{{ $message->userSender->name }}</b>: {{ $message->message }}
+                <b>{{ $sender->name }}</b>: {{ $message->message }}
                 <br>
                 <small>
                     fecha: {{ $message->created_at->format('Y-m-d H:i') }}
