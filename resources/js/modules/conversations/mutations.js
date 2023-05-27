@@ -1,10 +1,10 @@
-export function messages(state,{data,links,meta}){
-    state.messages = data;
+export function conversations(state,{data,links,meta}){
+    state.conversations = data;
     state.pagination = {...links,...meta}
 }
 
-export function message(state, {data}) {
-    state.message = data;
+export function conversation(state, {data}) {
+    state.conversation = data;
 }
 
 export function errors(state,{data}) {

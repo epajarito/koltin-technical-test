@@ -6,10 +6,10 @@ import router from './router'
 Vue.use(Vuex)
 
 import auth from './modules/auth'
-import schedules from './modules/schedules'
-import movies from './modules/movies'
 import posts from './modules/posts'
 import messages from  './modules/messages'
+import conversations from "./modules/conversations";
+import chats from "./modules/chats";
 
 const vuexLocal = new VuexPersistence({
     key : process.env.MIX_VUE_APP,
@@ -55,10 +55,10 @@ export default createStore(Vuex.Store,{
     },
     modules : {
         auth,
-        schedules,
-        movies,
         posts,
-        messages
+        messages,
+        conversations,
+        chats
     },
     plugins: [vuexLocal.plugin]
 })

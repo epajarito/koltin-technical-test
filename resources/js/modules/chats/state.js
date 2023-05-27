@@ -1,6 +1,6 @@
 export default {
-    schedules : [],
-    schedule : {},
+    chats : [],
+    chat : {},
     pagination : {},
     errors : {}
 }

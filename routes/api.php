@@ -6,6 +6,7 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\PostController;
 use App\Http\Controllers\Api\MessageController;
 use App\Http\Controllers\Api\ConversationController;
+use App\Http\Controllers\Api\ChatController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -19,10 +20,12 @@ use App\Http\Controllers\Api\ConversationController;
 
 Route::group(['middleware' => 'api'], function (){
     Route::post('login',[AuthController::class,'login']);
+    Route::post('register',[AuthController::class,'register']);
     Route::post('logout',[AuthController::class,'logout']);
     Route::resources([
         'posts' => PostController::class,
         'messages' => MessageController::class,
-        'conversations' => ConversationController::class
+        'conversations' => ConversationController::class,
+        'chats' => ChatController::class
     ]);
 });

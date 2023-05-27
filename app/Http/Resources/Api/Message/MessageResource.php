@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\Api\Message;
 
+use App\Http\Resources\Api\Attachment\AttachmentResource;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 class MessageResource extends JsonResource
@@ -26,6 +27,7 @@ class MessageResource extends JsonResource
             'relationships' => [
                 'receiver' => $this->resource->userReceiver,
                 'sender' => $this->resource->userSender,
+                'attachment' => new AttachmentResource($this->whenLoaded('attachment'))
             ],
             'links' => [
                 'self' => route('posts.show', $this->resource)

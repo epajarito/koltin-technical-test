@@ -55,30 +55,7 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
-        return new PostResource($post);
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Models\Post  $post
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, Post $post)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Post  $post
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Post $post)
-    {
-        //
+        return new PostResource($post->load('conversations.sender'));
     }
 
     private function upload(UploadedFile $uploadedFile)

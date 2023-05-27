@@ -8,6 +8,7 @@ use App\Http\Resources\Api\Message\MessageCollection;
 use App\Http\Resources\Api\Message\MessageResource;
 use App\Models\Message;
 use Illuminate\Http\Request;
+use Illuminate\Http\UploadedFile;
 
 class MessageController extends Controller
 {
@@ -19,6 +20,7 @@ class MessageController extends Controller
     public function index(Request $request)
     {
         $messages = Message::query()
+            ->with('attachment')
             ->where('post_id', '=', request()->input('post_id'))
             ->latest()
             ->paginate()
@@ -37,6 +39,21 @@ class MessageController extends Controller
     {
         $message = Message::create($request->validated());
 
+        if( $request->hasFile('file') ){
+            $url = $this->upload($request->file('file'));
+
+            $message->attachments()->create([
+                'user_id' => $request->input('user_id_sender'),
+                'url' => $url
+            ]);
+        }
+
         return new MessageResource($message);
+    }
+
+    private function upload(UploadedFile $uploadedFile)
+    {
+        $name = time() . ".{$uploadedFile->getClientOriginalExtension()}";
+        return $uploadedFile->storeAs('attachments', $name,'public');
     }
 }

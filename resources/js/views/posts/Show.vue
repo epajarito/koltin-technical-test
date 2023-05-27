@@ -9,6 +9,9 @@
                             <button class="btn btn-sm btn-primary" @click="createConversation" v-if="user.id !== post.attributes.user_id">
                                 INBOX
                             </button>
+                            <button class="btn btn-sm btn-success" @click="seeInbox" v-else>
+                                Ver INBOX
+                            </button>
                             <router-link class="btn btn-sm btn-primary" to="/posts">
                                 Ver publicaciones
                             </router-link>
@@ -31,6 +34,7 @@
                                         <p>
                                             <b>{{ message.relationships.sender.name }}</b>: {{ message.attributes.message }}
                                         </p>
+                                        <attachment-component :attachment="message.relationships.attachment" />
                                         <span class="time_date">
                                             {{ message.attributes.created_at_raw }}    |    {{ message.attributes.created_at }}
                                         </span>
@@ -38,6 +42,7 @@
                                 </div>
                                 <div class="sent_msg" v-else>
                                     <p>{{ message.attributes.message }}</p>
+                                    <attachment-component :attachment="message.relationships.attachment" />
                                     <span class="time_date">
                                         {{ message.attributes.created_at_raw }}    |    {{ message.attributes.created_at }}
                                     </span>
@@ -45,13 +50,46 @@
                             </div>
                         </div>
                         <div class="type_msg">
-                            <div class="input_msg_write">
-                                <input v-model="content" type="text" class="form-control-sm" placeholder="Escribe un mensaje" />
-                                <button class="msg_send_btn" type="button" @click="onSubmit">
-                                    <i class="fa fa-paper-plane" aria-hidden="true"></i>
-                                </button>
+                            <div class="input-group">
+                                <input type="text" v-model="content" class="form-control" placeholder="Escribe un mensaje" aria-label="" aria-describedby="button-addon4">
+                                <div class="input-group-append" id="button-addon4">
+                                    <label class="btn btn-outline-secondary" @click="onSubmit" type="button">
+                                        Enviar
+                                    </label>
+                                    <input type="file" style="display: none;" id="attachment" @change="onChangeInpFile" accept="image/*, audio/mp3, audio/m4a">
+                                    <label class="btn btn-outline-secondary" for="attachment">
+                                        Adjunto
+                                    </label>
+                                </div>
                             </div>
                         </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="seeChats" tabindex="-1" aria-labelledby="seeChats" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="seeChatsLabel">Chats</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <ul>
+                                <li v-for="chat in post.relationships.conversations.data">
+                                    <a href="#" @click="goToConversation(chat.id)">
+                                        {{ chat.relationships.user.name }}
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
                     </div>
                 </div>
             </div>
@@ -60,11 +98,16 @@
 </template>
 <script>
 import {mapActions,mapGetters,mapState} from 'vuex'
+import AttachmentComponent from "../../components/Attachment.vue";
 export default {
+    components: {
+        'attachment-component': AttachmentComponent
+    },
     data(){
         return{
+            items: [],
             content: '',
-            items: []
+            attachment: '',
         }
     },
     async mounted() {
@@ -78,7 +121,8 @@ export default {
         ...mapActions({
             'show' : 'posts/show',
             'store': 'messages/store',
-            'get' : 'messages/get'
+            'get' : 'messages/get',
+            'storeConversation' : 'conversations/store'
         }),
         async onSubmit(){
             let formData = new FormData();
@@ -86,6 +130,9 @@ export default {
             formData.append('user_id_sender',this.user.id)
             formData.append('post_id', this.post.id);
             formData.append('user_id_receiver', this.post.attributes.user_id)
+            if (this.attachment) {
+                formData.append('file', this.attachment)
+            }
             await this.store(formData)
             if(this.created){
                 this.items = [...this.items, this.message];
@@ -115,6 +162,22 @@ export default {
             formData.append('user_id_sender',this.user.id)
             formData.append('post_id', this.post.id);
             formData.append('user_id_receiver', this.post.attributes.user_id)
+            await this.storeConversation(formData)
+            this.$router.push({ name: 'conversation.show', params: { conversation: this.conversation.id } })
+        },
+        seeInbox(){
+            $('#seeChats').modal('toggle')
+        },
+        goToConversation(conversationId){
+            $('#seeChats').modal('toggle')
+            this.$router.push({ name: 'conversation.show', params: { conversation: conversationId } })
+        },
+        onChangeInpFile(e){
+            let files = e.target.files || e.dataTransfer.files
+            if(!files.length){
+                return;
+            }
+            this.attachment = files[0]
         }
     },
     computed:{
@@ -124,6 +187,7 @@ export default {
             'messages' : 'messages/messages',
             'message' : 'messages/message',
             'pagination' : 'messages/pagination',
+            'conversation' : 'conversations/conversation',
         }),
         ...mapState(['created'])
     }

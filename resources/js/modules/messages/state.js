@@ -1,6 +1,6 @@
 export default {
-    posts : [],
-    post : {},
+    messages : [],
+    message : {},
     pagination : {},
     errors : {}
 }

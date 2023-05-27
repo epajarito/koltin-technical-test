@@ -24,7 +24,14 @@ class StoreRequest extends FormRequest
     public function rules()
     {
         return [
-
+            'user_id_receiver' => [
+                'bail',
+                'required',
+                'int',
+                'exists:users,id',
+            ],
+            'user_id_sender' => 'bail|required|int|exists:users,id',
+            'post_id' => 'bail|required|int|exists:posts,id',
         ];
     }
 }

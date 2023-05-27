@@ -3,17 +3,12 @@ import Router from 'vue-router'
 import store from './store'
 Vue.use(Router);
 
-import Home from './views/Home.vue'
 import Login from './views/auth/Login.vue'
-import Movies from './views/movies/Index.vue'
+import Register from "./views/auth/Register.vue";
 import Posts from './views/posts/Index.vue'
 import CreatePost from './views/posts/Create.vue'
 import ShowPost from './views/posts/Show.vue'
-import CreateMovie from './views/movies/Create.vue'
-import UpdateMovie from './views/movies/Edit.vue'
-import Schedules from './views/schedules/Index.vue'
-import CreateSchedule from './views/schedules/Create.vue'
-import UpdateSchedule from './views/schedules/Edit.vue'
+import ShowConversation from './views/conversations/Show.vue'
 import NotFound from './views/pages/404.vue'
 
 let router = new Router({
@@ -25,16 +20,15 @@ let router = new Router({
             component: Login
         },
         {
+            path : '/register',
+            name : 'register',
+            component: Register
+        },
+        {
             path : '/',
             name : 'posts',
             component : Posts,
             meta : {requiresAuth : true}
-        },
-        {
-            path : '/movies',
-            name : 'movies',
-            component: Movies,
-            meta: {requiresAuth : true}
         },
         {
             path : '/posts',
@@ -55,34 +49,10 @@ let router = new Router({
             meta: {requiresAuth : true}
         },
         {
-            path : '/movies/create',
-            name : 'movies.create',
-            component: CreateMovie,
+            path : '/conversations/:conversation',
+            name : 'conversation.show',
+            component: ShowConversation,
             meta: {requiresAuth : true}
-        },
-        {
-            path : '/movies/edit/:movie',
-            name : 'movies.edit',
-            component: UpdateMovie,
-            meta: {requiresAuth : true}
-        },
-        {
-            path : '/schedules',
-            name: 'schedules',
-            component: Schedules,
-            meta: {requiresAuth: true}
-        },
-        {
-            path : '/schedules/create',
-            name : 'schedules.create',
-            component: CreateSchedule,
-            meta : {requiresAuth: true}
-        },
-        {
-            path : '/schedules/edit/:schedule',
-            name: 'schedules.edit',
-            component: UpdateSchedule,
-            meta: {requiresAuth: true}
         },
         {
             path: '/404',

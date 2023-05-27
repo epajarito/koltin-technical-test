@@ -27,7 +27,8 @@ class StoreRequest extends FormRequest
             'message' => 'required|string',
             'user_id_sender' => 'required|int|exists:users,id',
             'user_id_receiver' => 'required|int|exists:users,id',
-            'post_id' => 'required|int|exists:posts,id'
+            'post_id' => 'required|int|exists:posts,id',
+            'file' => 'bail|nullable|file|mimes:jpeg,png,jpg,gif,svg,webp,mp3,m4a|max:5120'
         ];
     }
 }

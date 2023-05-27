@@ -1,9 +1,9 @@
-export function movies({movies}) {
-    return movies;
+export function chats({chats}) {
+    return chats;
 }
 
-export function movie({movie}) {
-    return movie;
+export function chat({chat}) {
+    return chat;
 }
 
 export function pagination({pagination}) {

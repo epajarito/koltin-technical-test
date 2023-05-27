@@ -4,5 +4,6 @@ export default {
     error : false,
     error_message : '',
     expires_in : '',
-    access_token : null
+    access_token : null,
+    errors : {}
 }

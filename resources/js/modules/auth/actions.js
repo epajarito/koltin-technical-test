@@ -27,6 +27,34 @@ export async function login({commit},form){
     }
 }
 
+export async function register({commit},form){
+    try {
+        commit('authError', '')
+        commit('setLoading',true,{root : true})
+        let {data} = await Vue.axios({
+            method : 'post',
+            url : '/register',
+            data: form
+        });
+        commit('setUser',data);
+        axios.defaults.headers.common['Authorization'] = `Bearer ${data.access_token}`;
+        router.push('/posts')
+    }catch (error){
+        if(error.response){
+            commit('validateErrorResponse',error,{root : true})
+            if(error.response.status === 422) {
+                if (error.response.hasOwnProperty("data")) {
+                    commit('errors', {data: error.response.data})
+                }
+            }
+        } else{
+            commit('authError', error.message)
+        }
+    }finally {
+        commit('setLoading',false,{root : true})
+    }
+}
+
 export async function logout({commit}){
     try{
         commit('setLoading',true, {root : true})

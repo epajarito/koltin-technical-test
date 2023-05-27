@@ -14,6 +14,10 @@ export function logout(state) {
     state.access_token = '';
 }
 
+export function errors(state,{data}) {
+    state.errors = data.errors;
+}
+
 export function authError(state,error) {
     state.error = true;
     state.error_message = error;

@@ -50,6 +50,7 @@
                                     <button type="submit" class="btn btn-primary">
                                         Iniciar sesión
                                     </button>
+                                    <a href="/register">Registrarse</a>
                                 </div>
                             </div>
                         </form>

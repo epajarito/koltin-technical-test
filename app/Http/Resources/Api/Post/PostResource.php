@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources\Api\Post;
 
+use App\Http\Resources\Api\Conversation\ConversationCollection;
 use App\Http\Resources\Api\Message\MessageResource;
 use Illuminate\Http\Resources\Json\JsonResource;
 use Illuminate\Support\Str;
@@ -26,7 +27,8 @@ class PostResource extends JsonResource
             ],
             'relationships' => [
                 'messages' => MessageResource::collection( $this->whenLoaded('messages') ),
-                'user' => $this->resource->user
+                'user' => $this->resource->user,
+                'conversations' => ConversationCollection::make( $this->whenLoaded('conversations') )
             ],
             'links' => [
                 'self' => route('posts.show', $this->resource)

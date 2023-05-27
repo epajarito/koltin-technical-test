@@ -1,9 +1,9 @@
-export function messages({messages}) {
-    return messages;
+export function conversations({conversations}) {
+    return conversations;
 }
 
-export function message({message}) {
-    return message;
+export function conversation({conversation}) {
+    return conversation;
 }
 
 export function pagination({pagination}) {
