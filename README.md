@@ -13,6 +13,10 @@ composer install
 ```bash
 cp .env.example .env
 ```
+## Ejecutar el siguiente comando para generar el app key de la aplicación
+```bash
+php artisan key:generate
+```
 
 ## Ejecutar el siguiente comando para generar secret key el paquete de JWT
 ```bash
