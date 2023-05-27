@@ -137,6 +137,7 @@ export default {
             if(this.created){
                 this.items = [...this.items, this.message];
                 this.content = "";
+                this.attachment = '',
                 this.scrollToElement();
 
             }

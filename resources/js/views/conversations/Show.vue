@@ -73,6 +73,7 @@ export default {
     },
     data(){
         return{
+            attachment: '',
             content: '',
             items: []
         }
@@ -103,6 +104,7 @@ export default {
             if(this.created){
                 this.items = [...this.items, this.chat];
                 this.content = "";
+                this.attachment = '';
                 this.scrollToElement();
 
             }
