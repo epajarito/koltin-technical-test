@@ -20,10 +20,10 @@ class MessageResource extends JsonResource
                 'message' => $this->resource->message,
                 'created_at' => $this->resource->created_at->diffForHumans(),
                 'created_at_raw' => $this->resource->created_at->format('Y-m-d H:i'),
-                'self' => $this->resource->user_id_sender == auth()->id()
+                'self' => $this->resource->user_id_sender == auth()->id(),
+                'timestamp' => $this->resource->created_at->timestamp
             ],
             'relationships' => [
-                'me' => $this->resource->userSender,
                 'receiver' => $this->resource->userReceiver,
                 'sender' => $this->resource->userSender,
             ],

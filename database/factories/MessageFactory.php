@@ -19,7 +19,8 @@ class MessageFactory extends Factory
             'message' => $this->faker->sentence,
             'user_id_sender' => User::query()
                 ->inRandomOrder()
-                ->value('id')
+                ->value('id'),
+            'created_at' => $this->faker->dateTimeBetween('-5 hours')
         ];
     }
 }

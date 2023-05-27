@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\PostController;
 use App\Http\Controllers\Api\MessageController;
+use App\Http\Controllers\Api\ConversationController;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -21,6 +22,7 @@ Route::group(['middleware' => 'api'], function (){
     Route::post('logout',[AuthController::class,'logout']);
     Route::resources([
         'posts' => PostController::class,
-        'messages' => MessageController::class
+        'messages' => MessageController::class,
+        'conversations' => ConversationController::class
     ]);
 });

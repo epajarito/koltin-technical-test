@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests\Api\Message;
+namespace App\Http\Requests\Api\Conversation;
 
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -24,10 +24,7 @@ class StoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'message' => 'required|string',
-            'user_id_sender' => 'required|int|exists:users,id',
-            'user_id_receiver' => 'required|int|exists:users,id',
-            'post_id' => 'required|int|exists:posts,id'
+
         ];
     }
 }

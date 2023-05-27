@@ -24,7 +24,7 @@ class DatabaseSeeder extends Seeder
                 foreach ( $user->posts as $post ){
 
                     Message::factory()
-                        ->times(3)
+                        ->times(45)
                         ->create([
                             'post_id' => $post->id,
                             'user_id_receiver' => $post->user_id

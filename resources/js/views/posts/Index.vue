@@ -19,7 +19,7 @@
                 <div class="card">
                     <card class="card-body">
                         <div class="row">
-                            <div class="col-6 my-3" v-for="post in posts">
+                            <div class="col-12 my-3" v-for="post in posts">
                                 <div class="card card-custom">
                                     <img :src="post.attributes.image" class="card-img-top" :alt="post.attributes.title">
                                     <div class="card-body">

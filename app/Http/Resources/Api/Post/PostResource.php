@@ -19,9 +19,10 @@ class PostResource extends JsonResource
             'id' => $this->resource->getRouteKey(),
             'attributes'=> [
                 'title' => $this->resource->title,
-                'description' => Str::limit($this->resource->description,100, ''),
+                'description' => $this->resource->description,
                 'image' => asset("storage/".$this->resource->image),
-                'created_at' => $this->resource->created_at->format('Y-m-d')
+                'created_at' => $this->resource->created_at->format('Y-m-d'),
+                'user_id' => $this->resource->user_id
             ],
             'relationships' => [
                 'messages' => MessageResource::collection( $this->whenLoaded('messages') ),

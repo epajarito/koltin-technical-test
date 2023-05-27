@@ -9,6 +9,7 @@ import auth from './modules/auth'
 import schedules from './modules/schedules'
 import movies from './modules/movies'
 import posts from './modules/posts'
+import messages from  './modules/messages'
 
 const vuexLocal = new VuexPersistence({
     key : process.env.MIX_VUE_APP,
@@ -56,7 +57,8 @@ export default createStore(Vuex.Store,{
         auth,
         schedules,
         movies,
-        posts
+        posts,
+        messages
     },
     plugins: [vuexLocal.plugin]
 })

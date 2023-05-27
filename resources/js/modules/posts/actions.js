@@ -62,34 +62,6 @@ export async function store({commit},form) {
     }
 }
 
-export async function storeMessage({commit},form) {
-    try{
-        commit('setCreated',false,{root:true})
-        commit('setLoading',true,{root : true})
-        commit('errors', {data : {errors : {}}})
-        await Vue.axios({
-            method : 'post',
-            data : form,
-            url : '/messages',
-            headers : {
-                'content-type': 'multipart/form-data'
-            }
-        });
-        commit('setCreated',true,{root:true})
-    }catch (error) {
-        if(error.response){
-            commit('validateErrorResponse',error,{root : true})
-            if(error.response.status === 422) {
-                if (error.response.hasOwnProperty("data")) {
-                    commit('errors', {data: error.response.data})
-                }
-            }
-        }
-    }finally {
-        commit('setLoading',false,{root : true})
-    }
-}
-
 export async function update({commit}, {form,id}) {
     try{
         commit('setUpdated',false,{root:true})

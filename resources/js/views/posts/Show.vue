@@ -6,6 +6,9 @@
                     <div class="card-header border-0">
                         <h3 class="mb-0 float-left">{{ post.attributes.title }}</h3>
                         <div class="w-50 float-right text-right">
+                            <button class="btn btn-sm btn-primary" @click="createConversation" v-if="user.id !== post.attributes.user_id">
+                                INBOX
+                            </button>
                             <router-link class="btn btn-sm btn-primary" to="/posts">
                                 Ver publicaciones
                             </router-link>
@@ -18,12 +21,15 @@
             <div class="col-12">
                 <div class="messaging">
                     <div class="mesgs">
-                        <div class="msg_history">
-                            <div class="" v-for="message in post.relationships.messages" :class="message.attributes.self ? 'outgoing_msg' : 'incoming_msg' ">
+                        <div class="msg_history" id="messagesBox" @scroll="onScroll">
+                            <div
+                                v-for="message in items"
+                                :class="message.attributes.self ? 'outgoing_msg' : 'incoming_msg' "
+                            >
                                 <div v-if="!message.attributes.self" class="received_msg">
                                     <div class="received_withd_msg">
                                         <p>
-                                            {{ message.relationships.sender.name }}: {{ message.attributes.message }}
+                                            <b>{{ message.relationships.sender.name }}</b>: {{ message.attributes.message }}
                                         </p>
                                         <span class="time_date">
                                             {{ message.attributes.created_at_raw }}    |    {{ message.attributes.created_at }}
@@ -40,7 +46,7 @@
                         </div>
                         <div class="type_msg">
                             <div class="input_msg_write">
-                                <input v-model="form.message" type="text" class="form-control-sm" placeholder="Escribe un mensaje" />
+                                <input v-model="content" type="text" class="form-control-sm" placeholder="Escribe un mensaje" />
                                 <button class="msg_send_btn" type="button" @click="onSubmit">
                                     <i class="fa fa-paper-plane" aria-hidden="true"></i>
                                 </button>
@@ -57,40 +63,69 @@ import {mapActions,mapGetters,mapState} from 'vuex'
 export default {
     data(){
         return{
-            form:{
-                message: '',
-                user_id: this.user.id,
-                post_id: this.post.id
-            }
+            content: '',
+            items: []
         }
     },
     async mounted() {
         await this.show(this.$route.params.post);
-        console.log(this.post.relationships.messages)
+        let url = `/messages?post_id=${this.post.id}`;
+        await this.get(url)
+        this.items = this.messages.reverse();
+        this.scrollToElement()
     },
     methods:{
         ...mapActions({
             'show' : 'posts/show',
-            'storeMessage': 'posts/storeMessage'
+            'store': 'messages/store',
+            'get' : 'messages/get'
         }),
         async onSubmit(){
             let formData = new FormData();
-            for(let i in this.form){
-                formData.append(i,this.form[i])
+            formData.append('message',this.content)
+            formData.append('user_id_sender',this.user.id)
+            formData.append('post_id', this.post.id);
+            formData.append('user_id_receiver', this.post.attributes.user_id)
+            await this.store(formData)
+            if(this.created){
+                this.items = [...this.items, this.message];
+                this.content = "";
+                this.scrollToElement();
+
             }
-            await this.storeMessage(formData)
-            // if(this.created){
-            //     await this.get();
-            //     this.$router.push('/posts')
-            // }
+        },
+        scrollToElement() {
+            setTimeout(()=>{
+                var container = this.$el.querySelector("#messagesBox");
+                container.scrollTop = container.scrollHeight;
+            },350)
+        },
+        async onScroll ({ target: { scrollTop, clientHeight, scrollHeight }}) {
+            if (scrollTop === 0) {
+                if(!this.pagination.next){
+                    return;
+                }
+                await this.get(this.pagination.next)
+                let tmp = this.items;
+                this.items = [...this.messages, ...tmp].sort((a,b)=> a.attributes.timestamp - b.attributes.timestamp)
+            }
+        },
+        async createConversation() {
+            let formData = new FormData();
+            formData.append('user_id_sender',this.user.id)
+            formData.append('post_id', this.post.id);
+            formData.append('user_id_receiver', this.post.attributes.user_id)
         }
     },
     computed:{
         ...mapGetters({
             'user' : 'auth/user',
             'post' : 'posts/post',
+            'messages' : 'messages/messages',
+            'message' : 'messages/message',
+            'pagination' : 'messages/pagination',
         }),
-        ...mapState(['updated'])
+        ...mapState(['created'])
     }
 }
 </script>
