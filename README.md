@@ -42,7 +42,7 @@ DB_USERNAME=tu-usuario
 DB_PASSWORD=tu-contraseña
 ```
 
-## Configurar envio de email, en mi paso use mailhog (APLICA SOLO MODO LOCAL), dejo un ejemplo de configuración [MailHog](https://panjeh.medium.com/setup-mailhog-with-laravel-valet-localhost-or-laravel-sail-9d48895433e6)
+## Configurar envio de email, en mi caso use mailhog (APLICA SOLO MODO LOCAL), dejo un ejemplo de configuración [MailHog](https://panjeh.medium.com/setup-mailhog-with-laravel-valet-localhost-or-laravel-sail-9d48895433e6)
 ```env
 MAIL_MAILER=smtp
 MAIL_HOST=localhost
@@ -87,7 +87,7 @@ php artisan queue:work
 ## Ejecutar comando para el envio de email
 ```bash
 php artisan chats:send-history-individual-chats
-php artisan chats:chats:send-history-daily-messages
+php artisan chats:send-history-daily-messages
 ```
 acceder con las siguientes credenciales
 ```bash
