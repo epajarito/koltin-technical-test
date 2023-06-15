@@ -28,7 +28,6 @@
                                         <p>
                                             <b>{{ message.relationships.user.name }}</b>: {{ message.attributes.message }}
                                         </p>
-                                        {{ message.relationships }}
                                         <attachment-component :attachment="message.relationships.attachment" />
                                         <span class="time_date">
                                             {{ message.attributes.created_at_raw }}    |    {{ message.attributes.created_at }}
